@@ -61,33 +61,6 @@ export default function createEventPage() {
     setRows(times); // 縦軸に時間を設定
   }, [startTime, endTime]);
 
-
-
-  const handleTimeChange = (index: number, value: string) => {
-    const newRows = [...rows];
-    newRows[index] = value;
-    if (index === rows.length - 1 && value.trim() !== '') {
-      newRows.push('');
-    }
-    else if(index === rows.length - 2 && value.trim() === '') {
-        newRows.pop();
-    }
-    setRows(newRows);
-  };
-
-  const handleDateChange = (index: number, value: string) => {
-    const newCols = [...cols];
-    newCols[index] = value;
-    //最後の列が空でない場合は新しい列を追加
-    if (index === cols.length - 1 && value.trim() !== '') {
-      newCols.push('');
-    }
-    else if(index === cols.length - 2 && value.trim() === '') {
-        newCols.pop();
-    }
-    setCols(newCols);
-  };
-
   const handleCreate = async () => {
     
     try {
@@ -190,10 +163,12 @@ export default function createEventPage() {
           {cols.map((col, index) => (
             <tr key={index}>
               <td>
+                {col}
                 <input
                   type="text"
                   value={col}
-                  onChange={(e) => handleDateChange(index, e.target.value)}
+                  hidden
+                  readOnly
                 />
               </td>
             </tr>
@@ -210,10 +185,12 @@ export default function createEventPage() {
           {rows.map((row, index) => (
             <tr key={index}>
               <td>
+                {row}
                 <input
                   type="text"
                   value={row}
-                  onChange={(e) => handleTimeChange(index, e.target.value)}
+                  hidden
+                  readOnly
                 />
               </td>
             </tr>
