@@ -1,5 +1,5 @@
 import {fetchEvent } from '../actions';
-import { registerVote } from './registerVote';
+import { submitEventVote } from './actions';
 
 export default async function RegisterPage({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -22,7 +22,7 @@ export default async function RegisterPage({ params }: { params: { id: string } 
       <h2>{event.title}</h2>
       <p>{event.description}</p>
       
-      <form action={registerVote}>
+      <form action={submitEventVote}>
         <input type="hidden" name="eventId" value={id} />
         
         <div>
