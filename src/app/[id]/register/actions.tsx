@@ -4,8 +4,6 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { getuser } from '@/app/actions';
 import { registeruseravailable } from './useravailable';
-import { use } from 'react';
-
 export async function submitEventVote(formData: FormData) {
     const supabase = await createClient();
 
