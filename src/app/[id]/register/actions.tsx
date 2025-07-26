@@ -16,7 +16,7 @@ export async function submitEventVote(formData: FormData) {
         if (!eventId || !participantName.trim()) {
             throw new Error('必要な情報が不足しています');
         }
-        
+
         let voteuser = null;
 
         if (registerUser) {
@@ -36,7 +36,7 @@ export async function submitEventVote(formData: FormData) {
             voteuser = user;
         }
         else {
-            console.warn('ログインしていません。非認証ユーザーとして登録します。');
+            console.warn('ログインしていません');
         }
 
 
@@ -61,7 +61,7 @@ export async function submitEventVote(formData: FormData) {
             voteuser = voteuserData;
         }
         else {
-            console.warn('ログインしていません。非認証ユーザーとして登録します。');
+            console.warn('非認証ユーザーとして登録します。');
         }
 
         // 2. 投票データを収集
