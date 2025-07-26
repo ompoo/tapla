@@ -11,6 +11,7 @@ export async function registeruseravailable(data: FormData,userId: string) {
     const supabase = await createClient();
     const formattedData = formatUserAvailableData(data, userId);
     console.log('Formatted User Available Data:', formattedData);
+
     //データをSupabaseに登録
     const { error } = await supabase
         .from('user_availability_patterns')
@@ -94,6 +95,7 @@ export function formatUserAvailableData(data: FormData, userId: string): UserAva
                     startTime = new Date(Date.UTC(1970, parseInt(month) - 1, parseInt(day), parseInt(setHours), parseInt(setMinutes), 0, 0));
                     
                     console.log(`Start time set to: ${startTime.toISOString()}`);
+
                 }
                 // 連続する利用可能時間は継続
             } else {
@@ -107,6 +109,7 @@ export function formatUserAvailableData(data: FormData, userId: string): UserAva
                         user_id: userId,
                         start_time: startTime.toISOString(),
                         end_time: endTime.toISOString(),
+
                     };
                     console.log(`Creating slot: ${JSON.stringify(slot)}`);
                     formattedData.push(slot);
@@ -129,6 +132,7 @@ export function formatUserAvailableData(data: FormData, userId: string): UserAva
                 user_id: userId,
                 start_time: startTime.toISOString(),
                 end_time: endTime.toISOString(),
+
             };
             console.log(`Creating final slot: ${JSON.stringify(slot)}`);
             formattedData.push(slot);

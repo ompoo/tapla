@@ -42,6 +42,7 @@ export default async function RegisterPage({ params }: { params: { id: string } 
         
         
         <AutoSetData dates={dates} times={times}/>
+
         <div>
           <button type="submit">
             登録する

@@ -113,6 +113,7 @@ export async function submitEventVote(formData: FormData) {
                 console.error('Error registering user availability patterns:', error);
                 // 利用可能時間の登録に失敗してもメインの投票は成功させる
             }
+
         }
 
 
