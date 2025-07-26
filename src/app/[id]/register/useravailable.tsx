@@ -59,19 +59,19 @@ export function formatUserAvailableData(data: FormData, userId: string): UserAva
     // 日付と時刻のペアを作成（各日付ごとに独立したtimes Mapのコピーを作成）
     for (const date of dates) {
         const timesForDate = new Map(sortedTimes.map((time) => [time, false])); // times Mapのコピーを作成
-        cadidateDates.set(date, timesForDate); // datelabelsではなくdateLabelをキーに使用
+        candidateDates.set(date, timesForDate); // datelabelsではなくdateLabelをキーに使用
     }
 
     for (const [key, value] of data.entries()) {
         if(key.includes(`__`) && value == 'on') {
             const [dateLabel, timeLabel] = key.split('/')[0].split('__'); // labelで分割
-            const times = cadidateDates.get(dateLabel);
+            const times = candidateDates.get(dateLabel);
             if (!times) {
                 console.warn(`Date label ${dateLabel} not found in candidate dates.`);
                 continue;
             }
             else{
-                cadidateDates.get(dateLabel)?.set(timeLabel, true); // 時刻を利用可能としてマーク
+                candidateDates.get(dateLabel)?.set(timeLabel, true); // 時刻を利用可能としてマーク
             }
         }
     }
