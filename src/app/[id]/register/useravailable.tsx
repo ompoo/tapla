@@ -76,10 +76,10 @@ export function formatUserAvailableData(data: FormData, userId: string): UserAva
         }
     }
 
-    console.log('Candidate Dates:', cadidateDates);
+    console.log('Candidate Dates:', candidateDates);
 
 
-    for (const [dateLabel, times] of cadidateDates.entries()) {
+    for (const [dateLabel, times] of candidateDates.entries()) {
         const [month, day] = dateLabel.split('-');
         let slot: UserAvailable | null = null;
         let startTime: Date | null = null;
