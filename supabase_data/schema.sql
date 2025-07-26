@@ -73,7 +73,7 @@ CREATE TABLE voteuser (
   voteid UUID NOT NULL REFERENCES events(id) ON DELETE CASCADE, -- イベントID（投票ID）
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW(),
-  UNIQUE(userid, voteid) -- 同じユーザーが同じイベントに複数回参加登録することを防ぐ
+  UNIQUE(userlabel, voteid) -- 同じイベントで同じ表示名を防ぐ
 );
 
 -- ユーザーの過去の投票パターン（自動入力のため）
@@ -93,7 +93,7 @@ CREATE INDEX idx_event_times_event_id ON event_times(event_id);
 CREATE INDEX idx_event_times_order ON event_times(event_id, row_order);
 CREATE INDEX idx_voteuser_userid ON voteuser(userid);
 CREATE INDEX idx_voteuser_voteid ON voteuser(voteid);
-CREATE INDEX idx_voteuser_userid_voteid ON voteuser(userid, voteid);
+CREATE INDEX idx_voteuser_userlabel_voteid ON voteuser(userlabel, voteid);
 CREATE INDEX idx_votes_voteuser_id ON votes(voteuser_id);
 CREATE INDEX idx_votes_event_id ON votes(event_id);
 CREATE INDEX idx_votes_date_time ON votes(event_date_id, event_time_id);
