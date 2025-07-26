@@ -3,6 +3,7 @@ import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { getuser } from '@/app/actions';
+import { registeruseravailable } from './useravailable';
 
 export async function submitEventVote(formData: FormData) {
     const supabase = await createClient();
@@ -18,6 +19,7 @@ export async function submitEventVote(formData: FormData) {
         }
 
         let voteuser = null;
+        let databaseUserId = null; // 元のusersテーブルのユーザーIDを保持
 
         if (registerUser) {
             const { data: user, error: userError } = await supabase
@@ -34,6 +36,7 @@ export async function submitEventVote(formData: FormData) {
 
             // ユーザーが存在する場合はvoteuserに設定
             voteuser = user;
+            databaseUserId = user.id; // 元のユーザーIDを保持
         }
         else {
             console.warn('ログインしていません');
@@ -67,15 +70,25 @@ export async function submitEventVote(formData: FormData) {
         // 2. 投票データを収集
         const votes = [];
         for (const [key, value] of formData.entries()) {
-            if (key.includes('__') && value === 'on') { // __ で分割
-                const [dateId, timeId] = key.split('__');
-                votes.push({
-                    voteuser_id: voteuser ? voteuser.id : null, // 非認証ユーザーの場合はnull
-                    event_id: eventId,
-                    event_date_id: dateId,
-                    event_time_id: timeId,
-                    is_available: true
-                });
+            if (key.includes('__') && value === 'on') {
+                // key形式: "07-26__09:00/date_id__time_id"
+                const parts = key.split('/');
+                if (parts.length === 2) {
+                    const [_, idPart] = parts;
+                    const [dateId, timeId] = idPart.split('__');
+                    
+                    console.log(`Processing vote: dateId=${dateId}, timeId=${timeId}`);
+                    
+                    votes.push({
+                        voteuser_id: voteuser ? voteuser.id : null,
+                        event_id: eventId,
+                        event_date_id: dateId,
+                        event_time_id: timeId,
+                        is_available: true
+                    });
+                } else {
+                    console.warn(`Invalid key format: ${key}`);
+                }
             }
         }
 
@@ -90,6 +103,18 @@ export async function submitEventVote(formData: FormData) {
                 throw new Error('投票の保存に失敗しました');
             }
         }
+
+        if(registerUser && databaseUserId) {
+            try {
+                // ユーザーの利用可能時間を登録（database user IDを使用）
+                await registeruseravailable(formData, databaseUserId);
+                console.log('User availability patterns registered successfully');
+            } catch (error) {
+                console.error('Error registering user availability patterns:', error);
+                // 利用可能時間の登録に失敗してもメインの投票は成功させる
+            }
+        }
+
 
         // 4. キャッシュを再検証
         revalidatePath(`/${eventId}`);
