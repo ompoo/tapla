@@ -3,6 +3,8 @@ import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { getuser } from '@/app/actions';
+import { registeruseravailable } from './useravailable';
+import { use } from 'react';
 
 export async function submitEventVote(formData: FormData) {
     const supabase = await createClient();
@@ -68,7 +70,7 @@ export async function submitEventVote(formData: FormData) {
         const votes = [];
         for (const [key, value] of formData.entries()) {
             if (key.includes('__') && value === 'on') { // __ で分割
-                const [dateId, timeId] = key.split('__');
+                const [dateId, timeId] = key.split('/')[1].split('__');
                 votes.push({
                     voteuser_id: voteuser ? voteuser.id : null, // 非認証ユーザーの場合はnull
                     event_id: eventId,
@@ -90,6 +92,14 @@ export async function submitEventVote(formData: FormData) {
                 throw new Error('投票の保存に失敗しました');
             }
         }
+
+        if( voteuser){
+            // 3. ユーザーの利用可能時間を登録
+            const userId = voteuser.userid; // voteuserテーブルのuseridを使用
+            console.log('Calling registeruseravailable with userId:', userId);
+            await registeruseravailable(formData, userId);
+        }
+
 
         // 4. キャッシュを再検証
         revalidatePath(`/${eventId}`);

@@ -77,7 +77,7 @@ export default async function RegisterPage({ params }: { params: { id: string } 
                   {time.time_label}
                 </td>
                 {dates.map((date: any) => {
-                  const key = `${date.id}__${time.id}`;
+                  const key = `${date.date_label}__${time.time_label}/${date.id}__${time.id}`;
                   return (
                     <td key={key}>
                       <input type="checkbox" name={key} />
