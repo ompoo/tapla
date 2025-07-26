@@ -16,20 +16,52 @@ export async function submitEventVote(formData: FormData) {
         if (!eventId || !participantName.trim()) {
             throw new Error('必要な情報が不足しています');
         }
+        
+        let voteuser = null;
 
-        // 1. ユーザーを登録（非認証ユーザーとして）
-        const { data: user, error: userError } = await supabase
+        if (registerUser) {
+            const { data: user, error: userError } = await supabase
             .from('users')
-            .insert([{ 
-                name: participantName.trim(),
-                auth_user_id: registerUser?.id ?? null // 非認証ユーザー
-            }])
-            .select()
+            .select('id')
+            .eq('auth_user_id', registerUser.id)
             .single();
 
-        if (userError) {
-            console.error('Error creating user:', userError);
-            throw new Error('ユーザーの登録に失敗しました');
+            // usersテーブルからユーザー情報を取得（auth_user_idで検索）
+            if (userError || !user) {
+                console.error('Error finding user:', userError);
+                throw new Error('ユーザー情報の取得に失敗しました');
+            }
+
+            // ユーザーが存在する場合はvoteuserに設定
+            voteuser = user;
+        }
+        else {
+            console.warn('ログインしていません。非認証ユーザーとして登録します。');
+        }
+
+
+        // イベントへの投票ユーザーとして登録
+        
+        if (voteuser) {
+            const { data: voteuserData, error: voteUserError } = await supabase
+                .from('voteuser')
+                .insert([{ 
+                    userid: voteuser.id, // ユーザーID
+                    userlabel: participantName, // 参加者表示名
+                    voteid: eventId // 投票ID
+                }])
+                .select()
+                .single();
+
+            if (voteUserError) {
+                console.error('Error creating vote user:', voteUserError);
+                throw new Error('投票ユーザーの登録に失敗しました');
+            }
+            
+            voteuser = voteuserData;
+        }
+        else {
+            console.warn('ログインしていません。非認証ユーザーとして登録します。');
         }
 
         // 2. 投票データを収集
@@ -38,7 +70,7 @@ export async function submitEventVote(formData: FormData) {
             if (key.includes('__') && value === 'on') { // __ で分割
                 const [dateId, timeId] = key.split('__');
                 votes.push({
-                    user_id: user.id,
+                    voteuser_id: voteuser ? voteuser.id : null, // 非認証ユーザーの場合はnull
                     event_id: eventId,
                     event_date_id: dateId,
                     event_time_id: timeId,
