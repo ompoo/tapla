@@ -1,6 +1,5 @@
 
 import { createClient } from '@/utils/supabase/server';
-import { time } from 'console';
 import { Timestamp } from 'next/dist/server/lib/cache-handlers/types';
 
 export interface UserAvailable {
