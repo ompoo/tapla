@@ -2,7 +2,34 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+1. run
+    ```bash
+    git clone git@github.com:ompoo/tapla.git
+    ```
+    and
+    ```
+    cd tapla
+    ```
+1. install
+    ```bash
+    npm install
+    ```
+1. supabase setting
+    - create project
+    - run ``` supabase_data/schema.sql``` into sqleditor
+    - in local project create``` .env.local```
+        ```
+        NEXT_PUBLIC_SUPABASE_URL=https://<your URL>.supabase.co
+        NEXT_PUBLIC_SUPABASE_ANON_KEY=<your key>
+        NEXT_PUBLIC_SITE_URL=http://localhost:3000
+        ```
+1. start server
+    ```bash
+    npm run dev
+    ```
+1. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+another ways:
 
 ```bash
 npm run dev
