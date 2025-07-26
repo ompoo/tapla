@@ -1,26 +1,26 @@
 
 import { createClient } from '@/utils/supabase/server';
-import { Timestamp } from 'next/dist/server/lib/cache-handlers/types';
 
 export interface UserAvailable {
   user_id: string,
-  start_time: Timestamp,
-  end_time: Timestamp,
+  start_time: string,
+  end_time: string,
 }
 
 export async function registeruseravailable(data: FormData,userId: string) {
     const supabase = await createClient();
     const formattedData = formatUserAvailableData(data, userId);
     console.log('Formatted User Available Data:', formattedData);
-    // データをSupabaseに登録
-    // const { error } = await supabase
-    //     .from('user_availability_patterns')
-    //     .insert(formattedData);
 
-    // if (error) {
-    //     console.error('Error registering user availability:', error);
-    //     throw error;
-    // }
+    //データをSupabaseに登録
+    const { error } = await supabase
+        .from('user_availability_patterns')
+        .insert(formattedData);
+
+    if (error) {
+        console.error('Error registering user availability:', error);
+        throw error;
+    }
 }
 
 
@@ -90,36 +90,26 @@ export function formatUserAvailableData(data: FormData, userId: string): UserAva
             if (isAvailable) {
                 // 利用可能時間の開始
                 if (startTime === null) {
-                    startTime = new Date();
-                    startTime.setDate(parseInt(day));
-                    startTime.setMonth(parseInt(month) - 1);
-                    startTime.setFullYear(new Date().getFullYear());
+                    // 1970年UTCでの日付作成
                     const [setHours, setMinutes] = time.split(':');
-                    startTime.setHours(parseInt(setHours));
-                    startTime.setMinutes(parseInt(setMinutes));
-                    startTime.setSeconds(0);
-                    startTime.setMilliseconds(0);
+                    startTime = new Date(Date.UTC(1970, parseInt(month) - 1, parseInt(day), parseInt(setHours), parseInt(setMinutes), 0, 0));
                     
-                    console.log(`Start time set to: ${startTime}`);
+                    console.log(`Start time set to: ${startTime.toISOString()}`);
+
                 }
                 // 連続する利用可能時間は継続
             } else {
                 // 利用可能時間の終了
                 if (startTime !== null) {
-                    const endTime = new Date();
-                    endTime.setDate(parseInt(day));
-                    endTime.setMonth(parseInt(month) - 1);
-                    endTime.setFullYear(new Date().getFullYear());
+                    // 1970年UTCでの日付作成
                     const [setHours, setMinutes] = time.split(':');
-                    endTime.setHours(parseInt(setHours));
-                    endTime.setMinutes(parseInt(setMinutes));
-                    endTime.setSeconds(0);
-                    endTime.setMilliseconds(0);
+                    const endTime = new Date(Date.UTC(1970, parseInt(month) - 1, parseInt(day), parseInt(setHours), parseInt(setMinutes), 0, 0));
 
                     slot = {
                         user_id: userId,
-                        start_time: startTime.getTime(),
-                        end_time: endTime.getTime(),
+                        start_time: startTime.toISOString(),
+                        end_time: endTime.toISOString(),
+
                     };
                     console.log(`Creating slot: ${JSON.stringify(slot)}`);
                     formattedData.push(slot);
@@ -136,12 +126,13 @@ export function formatUserAvailableData(data: FormData, userId: string): UserAva
         if (startTime !== null) {
             // 最後の時刻の1時間後を終了時間とする
             const endTime = new Date(startTime);
-            endTime.setHours(endTime.getHours() + 1); // 1時間後
+            endTime.setUTCHours(endTime.getUTCHours() + 1); // 1時間後（UTC）
             
             slot = {
                 user_id: userId,
-                start_time: startTime.getTime(),
-                end_time: endTime.getTime(),
+                start_time: startTime.toISOString(),
+                end_time: endTime.toISOString(),
+
             };
             console.log(`Creating final slot: ${JSON.stringify(slot)}`);
             formattedData.push(slot);
