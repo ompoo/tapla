@@ -35,7 +35,7 @@ export function formatUserAvailableData(data: FormData, userId: string): UserAva
     const formattedData: UserAvailable[] = [];
     let dates:Set<string> = new Set();
     let times:Set<string> = new Set();
-    let cadidateDates:Map<string,Map<string,boolean>> = new Map();
+    let candidateDates:Map<string,Map<string,boolean>> = new Map();
 
     for (const [key, value] of data.entries()) {
 
