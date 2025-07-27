@@ -41,8 +41,8 @@ export async function fetchUserAvailability(startday: string, endday: string , u
             .from('user_availability_patterns')
             .select('*')
             .eq('user_id', userId)
-            .gte('end_time', startDateISO)
-            .lte('start_time', endDateISO);
+            .lt('start_time', endDateISO)   // パターンの開始時刻が範囲終了より前
+            .gt('end_time', startDateISO); 
 
         if (error) {
             console.error('Supabase query error:', error);
@@ -73,7 +73,7 @@ export async function fetchUserAvailability(startday: string, endday: string , u
 }
 
 
-export function formatCandidateData(dates: any[], times: any[]) {
+export function formatCandidateData(dates: any[], times: any[]) : Map<string, Map<string, boolean>>{
     const formattedData: Map<string, Map<string, boolean>> = new Map();
 
     for (const date of dates) {
@@ -110,8 +110,6 @@ export function setUserAvailabilityPattern(userAvailability: { start_time: strin
                 const timeISO = `${dateISO}T${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00.000Z`;
                 const timeDate = new Date(timeISO);
 
-                console.log(`Checking time: ${timeLabel} -> ${timeISO} -> ${timeDate.toISOString()}`);
-
                 // userAvailabilityの各パターンをチェック
                 let isAvailable = false;
                 for (const pattern of userAvailability) {
@@ -121,11 +119,6 @@ export function setUserAvailabilityPattern(userAvailability: { start_time: strin
                     
                     const startTime = new Date(startTimeStr);
                     const endTime = new Date(endTimeStr);
-
-                    console.log(`  Pattern: ${pattern.start_time} to ${pattern.end_time}`);
-                    console.log(`  Start: ${startTime.toISOString()}, End: ${endTime.toISOString()}`);
-                    console.log(`  Check: ${timeDate.toISOString()} >= ${startTime.toISOString()} && ${timeDate.toISOString()} < ${endTime.toISOString()}`);
-                    console.log(`  Result: ${timeDate >= startTime} && ${timeDate < endTime} = ${timeDate >= startTime && timeDate < endTime}`);
 
                     // 時刻が利用可能時間内にあるかチェック
                     if (timeDate >= startTime && timeDate < endTime) {
@@ -182,6 +175,14 @@ export default async function AutoSetData({ dates, times}: { dates: any[], times
     try {
         const candidate = formatCandidateData(dates, times);
         console.log('Formatted candidate data:', candidate);
+        /*
+        {
+            07-26: Map {
+                '09:00' => false,
+                '10:00' => false,
+            }
+        }
+        */
         
         // 日付の安全性チェック
         if (!dates?.length || !times?.length) {
@@ -191,9 +192,7 @@ export default async function AutoSetData({ dates, times}: { dates: any[], times
 
         const startday: string = dates[0]?.date_label;
         const endday: string = dates[dates.length - 1]?.date_label;
-        
-        console.log('Date range for availability check:', { startday, endday });
-        
+                
         if (!startday || !endday) {
             console.log('Invalid start or end day, using default table');
             return renderTable(dates, times, candidate);
@@ -202,10 +201,24 @@ export default async function AutoSetData({ dates, times}: { dates: any[], times
         console.log('Fetching user availability...');
         const userAvailabilitydata = await fetchUserAvailability(startday, endday, dbUser.id);
         console.log('User availability data received:', userAvailabilitydata);
+        /*
+        {
+            start_time: '1970-07-26T09:00:00.000Z',
+            end_time: '1970-07-26T12:00:00.000Z'
+        }
+        */
 
         // userAvailabilitydata が undefined の場合は空配列を使用
         const availabilityData = setUserAvailabilityPattern(userAvailabilitydata || [], candidate);
         console.log('Final availability data:', availabilityData);
+        /*
+        {
+            07-26: Map {
+                '09:00' => true,
+                '10:00' => false,
+            }
+        }
+        */
         
         return renderTable(dates, times, availabilityData);
         
