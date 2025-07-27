@@ -41,8 +41,8 @@ export async function fetchUserAvailability(startday: string, endday: string , u
             .from('user_availability_patterns')
             .select('*')
             .eq('user_id', userId)
-            .gte('end_time', startDateISO)
-            .lte('start_time', endDateISO);
+            .lt('start_time', endDateISO)   // パターンの開始時刻が範囲終了より前
+            .gt('end_time', startDateISO); 
 
         if (error) {
             console.error('Supabase query error:', error);
