@@ -1,25 +1,52 @@
 
 import { createClient } from '@/utils/supabase/server';
-
+import { updateUserAvailable } from './updateUseravailable';
 export interface UserAvailable {
   user_id: string,
   start_time: string,
   end_time: string,
 }
 
-export async function registeruseravailable(data: FormData,userId: string) {
-    const supabase = await createClient();
-    const formattedData = formatUserAvailableData(data, userId);
-    console.log('Formatted User Available Data:', formattedData);
+export async function registeruseravailable(data: FormData, userId: string, dates: any[], times: any[]) {
+    try {
+        const formattedData = formatUserAvailableData(data, userId);
+        console.log('Formatted User Available Data:', formattedData);
 
-    //データをSupabaseに登録
-    const { error } = await supabase
-        .from('user_availability_patterns')
-        .insert(formattedData);
+        // 日付の存在確認
+        if (!dates || dates.length === 0) {
+            console.warn('No dates provided, skipping user availability registration');
+            return;
+        }
 
-    if (error) {
-        console.error('Error registering user availability:', error);
-        throw error;
+        const startday: string = dates[0]?.date_label;
+        const endday: string = dates[dates.length - 1]?.date_label;
+        
+        if (!startday || !endday) {
+            console.error('Invalid start or end day');
+            throw new Error('日付情報が不正です');
+        }
+
+        const [startMonth, startDay] = startday.split('-').map(Number);
+        const [endMonth, endDay] = endday.split('-').map(Number);
+        
+        // 日付の妥当性チェック
+        if (isNaN(startMonth) || isNaN(startDay) || isNaN(endMonth) || isNaN(endDay)) {
+            console.error('Invalid date format:', { startday, endday });
+            throw new Error('日付形式が不正です');
+        }
+
+        const startDateISO = `1970-${startMonth.toString().padStart(2, '0')}-${startDay.toString().padStart(2, '0')}T00:00:00.000Z`;
+        const endDateISO = `1970-${endMonth.toString().padStart(2, '0')}-${endDay.toString().padStart(2, '0')}T23:59:59.999Z`;
+        
+        console.log(`Updating user availability for date range: ${startDateISO} to ${endDateISO}`);
+
+        // awaitを追加してエラーハンドリングを適切に行う
+        await updateUserAvailable(formattedData, userId, startDateISO, endDateISO);
+        
+        console.log('User availability patterns updated successfully');
+    } catch (error) {
+        console.error('Error in registeruseravailable:', error);
+        throw error; // 呼び出し元にエラーを伝播
     }
 }
 
@@ -132,8 +159,8 @@ export function formatUserAvailableData(data: FormData, userId: string): UserAva
                 user_id: userId,
                 start_time: startTime.toISOString(),
                 end_time: endTime.toISOString(),
-
             };
+            
             console.log(`Creating final slot: ${JSON.stringify(slot)}`);
             formattedData.push(slot);
         }

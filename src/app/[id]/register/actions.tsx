@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 import { getuser } from '@/app/actions';
 import { registeruseravailable } from './useravailable';
 
-export async function submitEventVote(formData: FormData) {
+export async function submitEventVote(dates: any[], times: any[], formData: FormData) {
     const supabase = await createClient();
 
     const eventId = formData.get('eventId') as string;
@@ -107,7 +107,7 @@ export async function submitEventVote(formData: FormData) {
         if(registerUser && databaseUserId) {
             try {
                 // ユーザーの利用可能時間を登録（database user IDを使用）
-                await registeruseravailable(formData, databaseUserId);
+                await registeruseravailable(formData, databaseUserId, dates, times);
                 console.log('User availability patterns registered successfully');
             } catch (error) {
                 console.error('Error registering user availability patterns:', error);

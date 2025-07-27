@@ -17,13 +17,16 @@ export default async function RegisterPage({ params }: { params: { id: string } 
 
   const { event, dates, times } = result.data;
 
+  // Server Actionにdatesとtimesをバインド
+  const submitEventVoteWithData = submitEventVote.bind(null, dates, times);
+
   return (
     <>
       <h1>イベント参加登録</h1>
       <h2>{event.title}</h2>
       <p>{event.description}</p>
       
-      <form action={submitEventVote}>
+      <form action={submitEventVoteWithData}  >
         <input type="hidden" name="eventId" value={id} />
         
         <div>
