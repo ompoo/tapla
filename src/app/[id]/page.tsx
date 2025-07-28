@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import {fetchEvent } from './actions';
 
 export default async function ConfirmPage({ params }: { params: Promise<{ id: string }> }) {
@@ -41,6 +42,11 @@ export default async function ConfirmPage({ params }: { params: Promise<{ id: st
               </li>
           ))}
       </ul>
+      <Link href={`/${id}/register`}>
+        <button>
+          登録
+        </button>
+      </Link>
       <p>イベントID: {event.id}</p>
       <p>作成者ID: {event.creator_id}</p>
       <p>作成日時: {new Date(event.created_at).toLocaleString()}</p>
