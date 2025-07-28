@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getuser } from "./actions";
 import { redirect } from "next/navigation";
 
@@ -31,6 +32,11 @@ export default async function Home() {
           </form>
         )}
       </div>
+      <Link href="/create">
+        <button>
+          イベントを作成
+        </button>
+      </Link>
     </div>
   );
 }

@@ -42,8 +42,19 @@ export async function submitEventVote(dates: any[], times: any[], formData: Form
             console.warn('ログインしていません');
         }
 
+        const { data:existinguser, error: existingUserError } = await supabase
+            .from('voteuser')
+            .select('*')
+            .eq('userlabel', participantName);
+
+        if (existingUserError) {
+            console.error('Error checking existing voteuser:', existingUserError);
+            throw new Error('投票ユーザーの確認に失敗しました');
+        }
+
 
         // イベントへの投票ユーザーとして登録
+
         
         if (voteuser) {
             const { data: voteuserData, error: voteUserError } = await supabase
