@@ -1,0 +1,15 @@
+.header{
+    display: flex;
+    align-items: center;
+}
+
+.title {
+  text-align: center;
+}
+
+.authParent {
+    margin-left: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -1,5 +1,6 @@
 import { getuser } from "./actions";
 import { redirect } from "next/navigation";
+import styles from "./header.module.css";
 
 export default async function Header() {
     const user = await getuser();
@@ -13,21 +14,19 @@ export default async function Header() {
         redirect("/auth/logout");
       }
   return (
-    <header>
-      <h1>tapla</h1>
-      <div>
+    <header className={styles.header}>
+      <h1 className={styles.title}>tapla</h1>
         {user ? (
-          <form action={handleLogout}>
+          <form action={handleLogout} className={styles.authParent}>
             <p>ログイン中: {user.email}</p>
             <button type="submit">ログアウト</button>
           </form>
         ) : (
-          <form action={handleLogin}>
+          <form action={handleLogin} className={styles.authParent}>
             <p>ログインしていません</p>
             <button type="submit">ログイン</button>
           </form>
         )}
-      </div>
     </header>
   );
 }
