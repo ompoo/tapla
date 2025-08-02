@@ -1,0 +1,59 @@
+.title {
+    text-align: center;
+}
+
+.eventDescription {
+    display: flex;
+    justify-items: center;
+}
+
+.settingDate {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.setitngTime {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.preview {
+    text-align: center;
+}
+
+.dateTimeTable {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    column-gap: 40px;
+}
+
+
+/* プレビューテーブル全体のスタイル */
+.dateTimeTable table {
+    border-collapse: separate;
+    border-spacing: 8px;
+}
+
+/* すべてのセル（th, td）のスタイル */
+.dateTimeTable th,
+.dateTimeTable td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 8px 12px;
+    border-radius: 4px;
+}
+
+/* ヘッダーセルのスタイル */
+.dateTimeTable th {
+    font-weight: bold;
+}
+
+/* チェックボックスを中央揃え */
+.dateTimeTable input[type="checkbox"] {
+    margin: 0;
+    display: block;
+    margin: 0 auto;
+}
