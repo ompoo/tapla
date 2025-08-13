@@ -1,42 +1,17 @@
 import Link from "next/link";
-import { getuser } from "./actions";
-import { redirect } from "next/navigation";
+import styles from "./page.module.css";
 
 export default async function Home() {
-  const user = await getuser();
-
-  async function handleLogin() {
-    "use server";
-    redirect("/auth/login");
-  }
-
-  async function handleLogout() {
-    "use server";
-    redirect("/auth/logout");
-  }
-
   return (
-    <div>
-      <h1>main</h1>
-      <p>Welcome to the main page!</p>
-      <div>
-        {user ? (
-          <form action={handleLogout}>
-            <p>ログイン中: {user.email}</p>
-            <button type="submit">ログアウト</button>
-          </form>
-        ) : (
-          <form action={handleLogin}>
-            <p>ログインしていません</p>
-            <button type="submit">ログイン</button>
-          </form>
-        )}
-      </div>
+    <div >
+      <h2 className={styles.subtitle}>日程調整サイト</h2>
+      <h1 className={styles.title}>tapla</h1>
       <Link href="/create">
-        <button>
+        <button className={styles.eventCreateButton}>
           イベントを作成
         </button>
       </Link>
+    
     </div>
   );
 }

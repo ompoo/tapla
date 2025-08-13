@@ -1,10 +1,9 @@
 'use client';
-import { handleClientScriptLoad } from "next/script";
 import { useState, useEffect } from "react";
 import { formatDate , createDateArray,createTimeArray } from "@/utils/format/times";
 import { createEvent } from "./actions";
 import { useRouter } from "next/navigation";
-import { type EventData ,type TimeData,type DateData } from "./actions";
+import styles from "./page.module.css";
 
 
 export default function createEventPage() {
@@ -111,48 +110,58 @@ export default function createEventPage() {
 
   return (
     <div>
-      <h1>イベント作成</h1>
-      <label htmlFor="event-name">イベント名</label>
-      <input 
-        id="event-name"
-        value={title} 
-        onChange={(e) => setTitle(e.target.value)}
-        required
-      />
-      <label htmlFor="event-description">イベント説明</label>
-      <textarea 
-        id="event-description"
-        value={description} 
-        onChange={(e) => setDescription(e.target.value)}
-      />
-      <label htmlFor="start-date">開始日</label>
-      <input 
-        id="start-date"
-        type="date" 
-        value={startDate}
-        onChange={(e) => setStartDate(e.target.value)}
-      />
-      <label htmlFor="end-date">終了日</label>
-      <input 
-        id="end-date"
-        type="date" 
-        value={endDate}
-        onChange={(e) => setEndDate(e.target.value)}
-      />
-      <label htmlFor="start-time">開始時刻</label>
-      <input 
-        id="start-time"
-        type="time" 
-        value={startTime}
-        onChange={(e) => setStartTime(e.target.value)}
-      />
-      <label htmlFor="end-time">終了時刻</label>
-      <input 
-        id="end-time"
-        type="time" 
-        value={endTime}
-        onChange={(e) => setEndTime(e.target.value)}
-      />
+      <h1 className={styles.title}>イベント作成</h1>
+
+      <div className={styles.eventDescription}>
+        <label htmlFor="event-name">イベント名</label>
+        <input 
+          id="event-name"
+          value={title} 
+          onChange={(e) => setTitle(e.target.value)}
+          required
+        />
+        <label htmlFor="event-description">イベント説明</label>
+        <textarea 
+          id="event-description"
+          value={description} 
+          onChange={(e) => setDescription(e.target.value)}
+        />
+      </div>
+
+      <div className={styles.settingDate}>
+        <label htmlFor="start-date">開始日</label>
+        <input 
+          id="start-date"
+          type="date" 
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
+        />
+        <label htmlFor="end-date">終了日</label>
+        <input 
+          id="end-date"
+          type="date" 
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
+        />
+      </div>
+
+      <div className={styles.settingTime}>
+        <label htmlFor="start-time">開始時刻</label>
+        <input 
+          id="start-time"
+          type="time" 
+          value={startTime}
+          onChange={(e) => setStartTime(e.target.value)}
+        />
+        <label htmlFor="end-time">終了時刻</label>
+        <input 
+          id="end-time"
+          type="time" 
+          value={endTime}
+          onChange={(e) => setEndTime(e.target.value)}
+        />
+      </div>
+<div className={styles.dateTimeTable}>
       <table>
         <thead>
           <tr>
@@ -197,7 +206,43 @@ export default function createEventPage() {
           ))}
         </tbody>
       </table>
-      <p>プレビュー</p>
+      <div>
+        <p className={styles.preview}>プレビュー</p>
+      <table>
+                <thead>
+                    <tr className={styles.tableHeader}>
+                        <th>時刻</th>
+                        {cols.map((col,index) => (
+                            <th key={index}>
+                              {col}
+                            </th>
+                        ))}
+                    </tr>
+                </thead>
+                <tbody>
+                    {rows.map((row,index) => (
+                        <tr key= {index}>
+                            <td>
+                                {row}
+                            </td>
+                            {cols.map((col,index) => {
+                                
+                                return (
+                                    <td key={index}>
+                                        <input 
+                                            type="checkbox" 
+                                        />
+                                    </td>
+                                );
+                            })}
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+      </div>
+      </div>
+
+
       <button
         onClick={handleCreate}   >
         イベントを作成

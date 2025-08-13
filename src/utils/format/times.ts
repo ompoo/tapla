@@ -40,8 +40,6 @@ export function createDateArray(date_start: Date, date_end: Date): string[] {
     return formatNoyearDate(date);
   });
   
-  // 最後に空の要素を追加
-  dates.push('');
   return dates;
 }
 
@@ -60,7 +58,5 @@ export function createTimeArray(startTotalMinutes: number, endTotalMinutes: numb
       const minute = totalMinutes % 60;
       return `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
     });
-    // 最後に空の要素を追加
-    times.push('');
     return times;
 }
