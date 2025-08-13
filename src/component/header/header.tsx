@@ -15,14 +15,14 @@ export default async function Header() {
       }
   return (
     <header className="h-14 flex flex-row items-center">
-      <h1 className="ml-5 text-center text-3xl font-bold">tapla</h1>
+      <h1 className="ml-5 mr-auto text-center text-3xl font-bold">tapla</h1>
         {user ? (
-          <form action={handleLogout} className="mr-5 flex ">
+          <form action={handleLogout} className="mr-5 flex flex-row items-center">
             <p>ログイン中: {user.email}</p>
             <button type="submit">ログアウト</button>
           </form>
         ) : (
-          <form action={handleLogin} className="mr-5 flex">
+          <form action={handleLogin} className="mr-5 flex flex-row items-center">
             <p>ログインしていません</p>
             <button type="submit">ログイン</button>
           </form>
