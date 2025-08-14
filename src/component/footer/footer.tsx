@@ -42,7 +42,7 @@ export default function Footer() {
             © 2025 tapla. All rights reserved.
           </p>
           <p className="text-muted-foreground text-sm flex-1  mt-4 md:mt-0 text-center">
-            Made with for university students
+            Made with love for university students
           </p>
         </div>
       </div>
