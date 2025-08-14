@@ -10,7 +10,8 @@
 
 .eventCreateButton {
   display: block;
-  margin: 50px auto;
+  margin: 0 auto;
+  margin-top: 50px;
   padding: 10px 20px;
   font-size: 16px;
   background-color: #ffb2cd;

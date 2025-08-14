@@ -1,12 +1,18 @@
 @import "tailwindcss";
 
-@import "tailwindcss";
-
 :root {
   --background: #ffffff;
   --foreground: #171717;
   /* Tailwind v4 spacing utilities rely on this base unit */
   --spacing: 0.25rem; /* 1 = 0.25rem => m-10 = 2.5rem */
+  
+  
+  --pastel-pink: #ff9eb5;
+  --pastel-blue: #a7d8f0;
+  --pastel-green: #b4e7ce;
+  --pastel-yellow: #ffd93d;
+  --pastel-purple: #ddd6fe;
+  --pastel-peach: #ffcc9a;
 }
 
 html,

@@ -7,38 +7,39 @@ export default function HowToUse() {
       title: "予定を作成",
       description: "予定作成者が候補日と候補時間を入力します",
       color: "bg-red-100",
-      bgColor: "bg-red-100/30"
+      bgColor: "bg-[#fcf1f1]"
     },
     {
       icon: MousePointer,
       title: "タップで参加",
       description: "参加者は表をタップするだけで参加可能時間を共有できます",
       color: "bg-blue-100",
-      bgColor: "bg-blue-100/30"
+      bgColor: "bg-[#eff6ff]"
     },
     {
       icon: BarChart3,
       title: "結果を確認",
       description: "全員が参加可能な日時をリアルタイムで確認できます",
       color: "bg-green-100",
-      bgColor: "bg-green-100/30"
+      bgColor: "bg-[#f0fdf4]"
     }
   ];
 
     return (
-        <section id="how-to-use" className="text-center">
-            <h2 className="text-3xl bg-gradient-to-r from-red-300  to-blue-200 inline-block text-transparent bg-clip-text">使い方</h2>
+        <section id="how-to-use" className="text-center px-3 container mx-auto">
+            <h2 className="text-4xl bg-gradient-to-r from-red-300  to-blue-200 inline-block text-transparent bg-clip-text">使い方</h2>
             <p className="mt-4">3ステップで簡単に予定調整</p>
 
-            <div className="flex items-center justify-center gap-8 mt-8 max-w-5xl mx-auto">
+            <div className="flex items-center justify-center gap-8 mt-8 mx-auto pl-4">
             {steps.map((step, index) => (
 
-              <div key={index} className="relative flex-1">
+              <div key={index} className="relative flex-1 h-72">
                 {/* Step number */}
                 <div className="absolute -top-4 -left-4 w-8 h-8 rounded-full bg-gradient-to-r from-red-300  to-blue-200 text-white text-center justify-center items-center flex">
                   {index + 1}
                 </div>
                 
+                {/* <Card className={`h-full ${step.bgColor} border-none shadow-lg transition-all duration-300`}> */}
                 <Card className={`h-full ${step.bgColor} border-none shadow-lg transition-all duration-300`}>
                   <CardContent className="p-8 text-center">
                     <div
