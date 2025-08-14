@@ -3,7 +3,7 @@
 export default function BackgroundPattern() {
   const shapes = [
     // 大きな四角形たち
-    { size: "w-32 h-32", color: "bg-red-200/30", position: "top-20 left-10 -90", rotation: 15 },
+    { size: "w-32 h-32", color: "bg-red-200/30", position: "top-20 left-10", rotation: 15 },
     { size: "w-40 h-28", color: "bg-blue-200/30", position: "top-40 right-20", rotation: -20 },
     { size: "w-28 h-36", color: "bg-green-200/30", position: "bottom-32 left-1/4", rotation: 25 },
     { size: "w-36 h-24", color: "bg-yellow-200/30", position: "bottom-20 right-1/3", rotation: -15 },
