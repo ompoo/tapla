@@ -1,6 +1,6 @@
 import Link from "next/link";
 import styles from "./page.module.css";
-import BackgroundPattern from "@/app/_component/BackGroundPattern";
+import BackgroundPattern from "@/BackGroundPattern";
 import  HowToUse from "@/app/_component/HowToUse";
 import Feature from "./_component/Feature";
 
