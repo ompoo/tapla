@@ -1,6 +1,6 @@
 
 
-export default function BackgroundPattern() {
+export default function BackgroundPattern({ className }: { className?: string }) {
   const shapes = [
     // 大きな四角形たち
     { size: "w-32 h-32", color: "bg-red-200/30", position: "top-20 left-10", rotation: 15 },
@@ -23,7 +23,7 @@ export default function BackgroundPattern() {
   ];
 
   return (
-    <div className="-z-50 fixed inset-0 pointer-events-none overflow-hidden">
+    <div className={`-z-50 fixed inset-0 pointer-events-none overflow-hidden ${className}`}>
       {shapes.map((shape, index) => (
         <div
           key={index}
