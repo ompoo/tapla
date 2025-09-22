@@ -2,7 +2,6 @@
 import React from 'react';
 import { createClient } from '@/utils/supabase/server';
 import { getuser } from '@/app/actions';
-import styles from './page.module.css';
 
 export interface CandidateData {
     dates: Map<string, Map<string, boolean>>;
@@ -244,7 +243,7 @@ export default async function AutoSetData({ dates, times}: { dates: any[], times
 
 function renderTable(dates: any[], times: any[], availabilityData: Map<string, Map<string, boolean>> | null) {
     return (
-        <div className={styles.dateTimeTable}>
+        <div className="flex justify-center items-start gap-10">
             {/* 日付ラベルのhidden input */}
             {dates.map((date) => (
                 <input 

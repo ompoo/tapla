@@ -1,5 +1,4 @@
 import Link from "next/link";
-import styles from "./page.module.css";
 import BackgroundPattern from "@/utils/BackGroundPattern";
 import  HowToUse from "@/app/_component/HowToUse";
 import Feature from "./_component/Feature";
@@ -8,11 +7,11 @@ export default async function Home() {
   return (
     <>
       <BackgroundPattern />
-      <div className={styles.heroTitle}>
-        <h1 className={styles.title}>tapla</h1>
+      <div className="h-screen flex flex-col justify-center items-center">
+        <h1 className="text-center text-8xl my-4">tapla</h1>
         <p>タップしてみんなの予定を教えろください</p>
         <Link href="/create">
-          <button className={styles.eventCreateButton}>
+          <button className="block mx-auto mt-12 py-3 px-5 text-base bg-[#ffb2cd] text-white border-none rounded-full cursor-pointer w-36">
             try
           </button>
         </Link>
@@ -27,7 +26,7 @@ export default async function Home() {
         <p className="mt-4">面倒な予定調整はもう終わり。<br />taplaで、みんなが笑顔になる時間を作りましょう。</p>
 
         <Link href="/create">
-          <button className={styles.eventCreateButton}>
+          <button className="block mx-auto mt-12 py-3 px-5 text-base bg-[#ffb2cd] text-white border-none rounded-full cursor-pointer w-36">
             無料で始める
           </button>
         </Link>

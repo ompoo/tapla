@@ -1,4 +1,3 @@
-import styles from "./footer.module.css";
 import { Calendar, Heart } from "lucide-react";
 export default function Footer() {
   return (

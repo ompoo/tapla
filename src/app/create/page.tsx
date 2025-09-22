@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { formatDate , createDateArray,createTimeArray } from "@/utils/format/times";
 import { createEvent } from "./actions";
 import { useRouter } from "next/navigation";
-import styles from "./page.module.css";
+import InputCard from "./inputCard";
 
 
 export default function createEventPage() {
@@ -110,68 +110,35 @@ export default function createEventPage() {
 
   return (
     <div>
-      <h1 className={styles.title}>イベント作成</h1>
+       <h1 className="text-center">イベント作成</h1>
+      <InputCard 
+        title={title}
+        setTitle={setTitle}
+        description={description}
+        setDescription={setDescription}
+        startDate={startDate}
+        setStartDate={setStartDate}
+        endDate={endDate}
+        setEndDate={setEndDate}
+        startTime={startTime}
+        setStartTime={setStartTime}
+        endTime={endTime}
+        setEndTime={setEndTime}
+      />
+     
 
-      <div className={styles.eventDescription}>
-        <label htmlFor="event-name">イベント名</label>
-        <input 
-          id="event-name"
-          value={title} 
-          onChange={(e) => setTitle(e.target.value)}
-          required
-        />
-        <label htmlFor="event-description">イベント説明</label>
-        <textarea 
-          id="event-description"
-          value={description} 
-          onChange={(e) => setDescription(e.target.value)}
-        />
-      </div>
 
-      <div className={styles.settingDate}>
-        <label htmlFor="start-date">開始日</label>
-        <input 
-          id="start-date"
-          type="date" 
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-        />
-        <label htmlFor="end-date">終了日</label>
-        <input 
-          id="end-date"
-          type="date" 
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-        />
-      </div>
-
-      <div className={styles.settingTime}>
-        <label htmlFor="start-time">開始時刻</label>
-        <input 
-          id="start-time"
-          type="time" 
-          value={startTime}
-          onChange={(e) => setStartTime(e.target.value)}
-        />
-        <label htmlFor="end-time">終了時刻</label>
-        <input 
-          id="end-time"
-          type="time" 
-          value={endTime}
-          onChange={(e) => setEndTime(e.target.value)}
-        />
-      </div>
-<div className={styles.dateTimeTable}>
-      <table>
+<div className="flex justify-center items-start gap-10">
+      <table className="border-separate border-spacing-2">
         <thead>
           <tr>
-            <th>日付</th>
+            <th className="text-center font-bold p-3 rounded">日付</th>
           </tr>
         </thead>
         <tbody>
           {cols.map((col, index) => (
             <tr key={index}>
-              <td>
+              <td className="text-center p-3 rounded">
                 {col}
                 <input
                   type="text"
@@ -184,16 +151,16 @@ export default function createEventPage() {
           ))}
         </tbody>
       </table>
-      <table>
+      <table className="border-separate border-spacing-2">
         <thead>
           <tr>
-            <th>時間</th>
+            <th className="text-center font-bold p-3 rounded">時間</th>
           </tr>
         </thead>
         <tbody>
           {rows.map((row, index) => (
             <tr key={index}>
-              <td>
+              <td className="text-center p-3 rounded">
                 {row}
                 <input
                   type="text"
@@ -207,13 +174,13 @@ export default function createEventPage() {
         </tbody>
       </table>
       <div>
-        <p className={styles.preview}>プレビュー</p>
-      <table>
+        <p className="text-center">プレビュー</p>
+      <table className="border-separate border-spacing-2">
                 <thead>
-                    <tr className={styles.tableHeader}>
-                        <th>時刻</th>
+                    <tr>
+                        <th className="text-center font-bold p-3 rounded">時刻</th>
                         {cols.map((col,index) => (
-                            <th key={index}>
+                            <th key={index} className="text-center font-bold p-3 rounded">
                               {col}
                             </th>
                         ))}
@@ -222,15 +189,16 @@ export default function createEventPage() {
                 <tbody>
                     {rows.map((row,index) => (
                         <tr key= {index}>
-                            <td>
+                            <td className="text-center p-3 rounded">
                                 {row}
                             </td>
                             {cols.map((col,index) => {
                                 
                                 return (
-                                    <td key={index}>
+                                    <td key={index} className="text-center p-3 rounded">
                                         <input 
                                             type="checkbox" 
+                                            className="mx-auto block"
                                         />
                                     </td>
                                 );

@@ -44,12 +44,12 @@ export default function Feature() {
         <h2 className="text-4xl bg-gradient-to-r to-green-200  from-blue-300 inline-block text-transparent bg-clip-text">主な特徴</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-center justify-center gap-8 mt-8 mx-auto">
         {features.map((feature, index) => (
-            <div key={index}>
+            <div key={index} className="h-full">
                 <Card>
                     <div className={`h-2 w-full mb-3 bg-gradient-to-r ${feature.gradient} rounded-t-lg`}/>
                     
-                    <CardContent className="p-8">
-                        <div className="">
+                    <CardContent >
+                        <div className="h-full">
                             <div 
                             className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${feature.gradient} flex items-center justify-center mx-auto mb-6`}
                             >
@@ -82,7 +82,7 @@ type CardProps = {
 
 export function Card({ children, className }: CardProps) {
   return (
-    <div className={`rounded-lg border-none bg-white ${className}`}>
+    <div className={`h-full rounded-lg border-none bg-white ${className}`}>
       {children}
     </div>
   );

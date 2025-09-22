@@ -1,6 +1,5 @@
 import { getuser } from "./actions";
 import { redirect } from "next/navigation";
-import styles from "./header.module.css";
 
 export default async function Header() {
     const user = await getuser();
